@@ -17,6 +17,8 @@ services:
       - DB_PASSWORD=password
       - REDIS_URL=redis:6379
     restart: unless-stopped
+    networks:
+      - app-network
   nginx:
     image: nginx:alpine
     ports:
