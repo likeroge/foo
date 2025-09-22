@@ -34,6 +34,11 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(buf, &u)
 		fmt.Println(u)
 		fmt.Println(u.Name, u.Email)
+		if GetUsersListSize() >= 10 {
+			w.Write([]byte("Too many users!"))
+			fmt.Println("Too many users!")
+			return
+		}
 		AddUser(User{Name: u.Name, Email: u.Email})
 	} else{
 		w.Write([]byte("Page not found!"))

@@ -1,7 +1,10 @@
-POST http://localhost:5000/user
-content-type: application/json
+# POST http://localhost:5000/user
+# POST http://185.250.44.151:5000/user
+GET http://185.250.44.151:5000/hello
 
-{
-    "name": "sample",
-    "email": "sam@awqe"
-}
+# content-type: application/json
+
+# {
+#     "name": "sample",
+#     "email": "sam@awqe"
+# }

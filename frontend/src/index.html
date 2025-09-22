@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="greeting" id="greeting">
+        <h1 class="main-title">ПРИВЕТ МИР!</h1>
+        <div class="subtitle">
+          Добро пожаловать на наш прекрасный статический сайт
+        </div>
+      </div>
+
+      <div class="content">
+        <p>
+          Это простой текст, который демонстрирует работу нашего статического
+          сайта.
+        </p>
+        <p>Сайт собран в Docker контейнере и обслуживается сервером nginx.</p>
+        <p>Технологии, использованные в этом проекте:</p>
+        <ul>
+          <li>HTML5 для структуры</li>
+          <li>CSS3 для стилей</li>
+          <li>JavaScript для интерактивности</li>
+          <li>Docker для контейнеризации</li>
+          <li>Nginx для отдачи статики</li>
+        </ul>
+      </div>
+
+      <div class="animation-demo">
+        <button onclick="changeColor()">Изменить цвет заголовка</button>
+        <button onclick="addSparkles()">Добавить эффект</button>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+    <!-- <script type="module" defer src="./script.js"></script> -->
+  </body>
+</html>
