@@ -16,10 +16,7 @@ func FindAllUsers(w http.ResponseWriter, r *http.Request) {
 		//all users
 		w.Header().Set("Content-Type", "application/json")
 		users := GetAllUsers()
-		for _, user := range users {
-			userBytes, _ := json.Marshal(user)
-			fmt.Fprintln(w, string(userBytes))
-		}
+		json.NewEncoder(w).Encode(users)
 	}
 }
 
