@@ -1,0 +1,33 @@
+# Этап сборки
+FROM golang:1.21-alpine AS builder
+
+WORKDIR /app
+
+# Копируем файлы модулей
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Копируем исходный код
+COPY . .
+
+# Собираем статический бинарник
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o myapp .
+
+# Финальный этап - минимальный образ
+FROM alpine:3.18
+
+# Устанавливаем зависимости времени выполнения если нужны
+RUN apk --no-cache add ca-certificates
+
+WORKDIR /root/
+
+# Копируем бинарник из этапа сборки
+COPY --from=builder /app/myapp .
+
+# Создаем непривилегированного пользователя
+RUN adduser -D myuser
+USER myuser
+
+EXPOSE 5000
+
+CMD ["./myapp"]
