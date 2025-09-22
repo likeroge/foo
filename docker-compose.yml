@@ -13,6 +13,11 @@ services:
     restart: unless-stopped
     networks:
       - app-network
+  frontend:
+    build:
+      context: ./frontend
+    networks:
+      - app-network
   nginx:
     image: nginx:alpine
     ports:
