@@ -1,13 +1,11 @@
-# FROM nginx:alpine
+FROM node:20-alpine AS builder
 
-# WORKDIR /app
+WORKDIR /app
 
-# COPY src/ ./
+COPY package*.json ./
+# Если используете pnpm/yarn: замените на соответствующие команды
+RUN npm ci --silent
 
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY . .
 
-# RUN cp -r . /usr/share/nginx/html
-
-# EXPOSE 80
-
-# CMD ["nginx", "-g", "daemon off;"]
+RUN npm run build
