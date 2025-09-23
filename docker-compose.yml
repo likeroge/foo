@@ -15,18 +15,24 @@ services:
       - app-network
   frontend:
     volumes:
-      - ./frontend/dist:/app/dist
+      - ./frontend:/app
+      # - frontend-node-modules:/app/node_modules
+    depends_on:
+      - backend
+    restart: unless-stopped
     build:
       context: ./frontend
     networks:
       - app-network
   nginx:
-    image: nginx:alpine
+    build:
+      context: ./nginx
     ports:
       - "80:80"
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      # - ./frontend/dist:/usr/share/nginx/html
+      - "443:443"
+    # volumes:
+    # - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    # - ./frontend/dist:/usr/share/nginx/html
     depends_on:
       - frontend
       - backend
