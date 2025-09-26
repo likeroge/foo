@@ -11,7 +11,9 @@ RUN go mod download
 COPY . .
 
 # Собираем статический бинарник
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o myapp .
+# RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o myapp .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o myapp ./cmd/api/main.go
+
 
 # Финальный этап - минимальный образ
 FROM alpine:3.18
