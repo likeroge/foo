@@ -12,7 +12,7 @@ COPY . .
 
 # Собираем статический бинарник
 # RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o myapp .
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o myapp ./cmd/api/main.go
+RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-w -s" -o myapp ./cmd/api/main.go
 
 
 # Финальный этап - минимальный образ
