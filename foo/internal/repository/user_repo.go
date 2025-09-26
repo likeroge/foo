@@ -2,12 +2,11 @@ package repository
 
 import "ego.dev21/greetings/internal/entities"
 
-var users = []entities.User{}
-
-func GetAllUsers() []entities.User {
-	return users
-}
-
-func AddUser(user entities.User) {
-	users = append(users, user)
+type UserRepository interface {
+	GetAllUsers() []entities.User
+	AddUser(user entities.User) (int64, error)
+	DeleteUser(id int)
+	FindUserById(id int) (*entities.User, error)
+	FindUserByName(name string) (*entities.User, error)
+	FindUserByEmail(email string) (*entities.User, error)
 }

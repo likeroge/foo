@@ -1,9 +1,13 @@
 
-POST http://185.250.44.151/api/user
+# POST http://185.250.44.151/api/user
 # POST http://localhost:5000/user
+# GET http://localhost:5000/api/user/all
+GET http://localhost:5000/api/user/find/id/9
+# GET http://localhost:5000/api/user/find/email/qwe
+# GET http://localhost:5000/api/user/find/name/Twoto
 content-type: application/json
 
 {
-    "name": "sample",
-    "email": "sam@awqe"
+    "name": "Gwqeqwe",
+    "email": "ggg@awqe"
 }
