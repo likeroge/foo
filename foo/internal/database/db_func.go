@@ -7,10 +7,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-
-
 func InitDB() error {
-	db, err := sql.Open("sqlite3", "foo.db")
+	db, err := sql.Open("./sqlite3", "foo.db")
 	if err != nil {
 		panic(err)
 	}
@@ -21,7 +19,7 @@ func InitDB() error {
 	}
 	fmt.Printf("result: %d\n", result)
 	return nil
-}	
+}
 
 func GetDB() *sql.DB {
 	db, err := sql.Open("sqlite3", "foo.db")
