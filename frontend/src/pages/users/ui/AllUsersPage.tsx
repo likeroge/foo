@@ -16,7 +16,7 @@ export const AllUsersPage = () => {
         console.error((error as Error).message);
       }
     })();
-  }, [users]);
+  }, []);
   console.log(users);
 
   return (

@@ -1,0 +1,14 @@
+.findUserPageContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* gap: 20px; */
+}
+
+.findUserFormContainer,
+.findUserResultsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 50%;
+}

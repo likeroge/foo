@@ -1,0 +1,37 @@
+.findUserForm {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.findUserInput {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  max-width: 250px;
+}
+
+.findUserButton {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px;
+}
+
+.findUserButton:hover {
+  background-color: darkgreen;
+}
+
+.findUserButton:active {
+  background-color: green;
+  transform: translateY(2px);
+}
+
+.findUserInputsContainer {
+  display: flex;
+  gap: 10px;
+}

@@ -4,7 +4,9 @@ import styles from "./DeleteUserButton.module.css";
 export const DeleteUserButton = ({ userId }: { userId: number }) => {
   return (
     <button
-      onClick={() => deleteUser(userId)}
+      onClick={() => {
+        deleteUser(userId);
+      }}
       type="button"
       className={styles.deleteUserButton}
     >

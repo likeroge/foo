@@ -3,14 +3,11 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"ego.dev21/greetings/internal/database"
 	"ego.dev21/greetings/internal/presentation/http/handlers/users"
 )
-
-// type SqliteDB struct {
-// 	db *sql.DB
-// }
 
 func main() {
 	http.HandleFunc("/hello", users.GetHello)
@@ -26,6 +23,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
 	log.Println("Server started on http://localhost:5000")
-	http.ListenAndServe(":5000", nil)
+	http.ListenAndServe(":"+port, nil)
 }
