@@ -1,0 +1,17 @@
+.deleteUserButton {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.deleteUserButton:hover {
+  background-color: darkred;
+}
+
+.deleteUserButton:active {
+  background-color: red;
+  transform: translateY(2px);
+}

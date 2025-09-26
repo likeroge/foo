@@ -1,5 +1,5 @@
-import styles from "./AboutPage.module.css";
+import { PageLayout } from "../../../shared/page-layout";
 
 export const AboutPage = () => {
-  return <div className={styles.aboutPage}>AboutPage</div>;
+  return <PageLayout>AboutPage</PageLayout>;
 };

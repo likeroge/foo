@@ -1,0 +1,24 @@
+.addUserForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.addUserButton {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px;
+}
+
+.addUserButton:hover {
+  background-color: darkgreen;
+}
+
+.addUserButton:active {
+  background-color: green;
+  transform: translateY(2px);
+}

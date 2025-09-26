@@ -1,5 +1,5 @@
-import styles from "./HomePage.module.css";
+import { PageLayout } from "../../../shared/page-layout";
 
 export const HomePage = () => {
-  return <div className={styles.homePage}>HomePage</div>;
+  return <PageLayout>HomePage</PageLayout>;
 };

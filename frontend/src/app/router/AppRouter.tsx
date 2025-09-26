@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import { AboutPage, HomePage } from "../../pages";
+import { AddUserPage, AllUsersPage } from "../../pages/users";
 
 export const appRouter = createBrowserRouter([
   {
@@ -9,5 +10,13 @@ export const appRouter = createBrowserRouter([
   {
     path: "/about",
     element: <AboutPage />,
+  },
+  {
+    path: "/users/list",
+    element: <AllUsersPage />,
+  },
+  {
+    path: "/users/add",
+    element: <AddUserPage />,
   },
 ]);
