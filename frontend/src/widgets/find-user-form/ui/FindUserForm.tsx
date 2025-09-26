@@ -31,6 +31,7 @@ export const FindUserForm = ({
     }
     console.log(result);
     setSearchResults(result);
+    setSearchValue("");
   };
 
   const handleSearchParamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
