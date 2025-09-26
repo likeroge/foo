@@ -10,6 +10,9 @@ RUN go mod download
 # Копируем исходный код
 COPY . .
 
+
+RUN CGO_ENABLED=1 GOOS=linux go build -v github.com/mattn/go-sqlite3
+
 # Собираем статический бинарник
 # RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o myapp .
 RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-w -s" -o myapp ./cmd/api/main.go
