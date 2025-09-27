@@ -1,9 +1,9 @@
 package sqliterepos
 
 import (
-	"database/sql"
 	"fmt"
 
+	"ego.dev21/greetings/internal/database"
 	"ego.dev21/greetings/internal/entities"
 	"ego.dev21/greetings/internal/repository"
 	_ "github.com/glebarez/go-sqlite"
@@ -18,10 +18,7 @@ func NewUserSqliteRepository() repository.UserRepository {
 }
 
 func (r *UserSqliteRepository) DeleteUser(id int) {
-	db, err := sql.Open("sqlite", "./foo.db")
-	if err != nil {
-		panic(err)
-	}
+	db := database.GetDB()
 	defer db.Close()
 
 	result, err := db.Exec("DELETE FROM users WHERE id = ?", id)
@@ -32,10 +29,7 @@ func (r *UserSqliteRepository) DeleteUser(id int) {
 }
 
 func (r *UserSqliteRepository) GetAllUsers() []entities.User {
-	db, err := sql.Open("sqlite", "./foo.db")
-	if err != nil {
-		panic(err)
-	}
+	db := database.GetDB()
 	defer db.Close()
 
 	rows, err := db.Query("SELECT id, name, email FROM users")
@@ -55,10 +49,7 @@ func (r *UserSqliteRepository) GetAllUsers() []entities.User {
 }
 
 func (r *UserSqliteRepository) AddUser(user entities.User) (int64, error) {
-	db, err := sql.Open("sqlite", "./foo.db")
-	if err != nil {
-		return -1, err
-	}
+	db := database.GetDB()
 	defer db.Close()
 
 	result, err := db.Exec("INSERT INTO users (name, email) VALUES (?, ?)", user.Name, user.Email)
@@ -70,10 +61,7 @@ func (r *UserSqliteRepository) AddUser(user entities.User) (int64, error) {
 }
 
 func (r *UserSqliteRepository) FindUserById(id int) (*entities.User, error) {
-	db, err := sql.Open("sqlite", "./foo.db")
-	if err != nil {
-		return nil, err
-	}
+	db := database.GetDB()
 	defer db.Close()
 
 	rows := db.QueryRow("SELECT id, name, email FROM users WHERE id = ?", id)
@@ -85,10 +73,7 @@ func (r *UserSqliteRepository) FindUserById(id int) (*entities.User, error) {
 }
 
 func (r *UserSqliteRepository) FindUserByName(name string) (*entities.User, error) {
-	db, err := sql.Open("sqlite", "./foo.db")
-	if err != nil {
-		return nil, err
-	}
+	db := database.GetDB()
 	defer db.Close()
 
 	rows := db.QueryRow("SELECT id, name, email FROM users WHERE name = ?", name)
@@ -100,10 +85,7 @@ func (r *UserSqliteRepository) FindUserByName(name string) (*entities.User, erro
 }
 
 func (r *UserSqliteRepository) FindUserByEmail(email string) (*entities.User, error) {
-	db, err := sql.Open("sqlite", "./foo.db")
-	if err != nil {
-		return nil, err
-	}
+	db := database.GetDB()
 	defer db.Close()
 
 	rows := db.QueryRow("SELECT id, name, email FROM users WHERE email = ?", email)
