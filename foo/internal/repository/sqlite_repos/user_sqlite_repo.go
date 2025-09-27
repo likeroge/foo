@@ -6,7 +6,6 @@ import (
 
 	"ego.dev21/greetings/internal/entities"
 	"ego.dev21/greetings/internal/repository"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 type UserSqliteRepository struct {

@@ -11,7 +11,7 @@ import (
 
 func main() {
 	http.HandleFunc("/hello", users.GetHello)
-	//users
+	// users
 	http.HandleFunc("/api/user/all", users.FindAllUsers)
 	http.HandleFunc("/api/user", users.CreateUser)
 	http.HandleFunc("/api/user/delete/{userId}", users.DeleteUser)
