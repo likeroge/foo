@@ -6,6 +6,7 @@ import (
 
 	"ego.dev21/greetings/internal/entities"
 	"ego.dev21/greetings/internal/repository"
+	_ "github.com/glebarez/go-sqlite"
 )
 
 type UserSqliteRepository struct {
@@ -17,7 +18,7 @@ func NewUserSqliteRepository() repository.UserRepository {
 }
 
 func (r *UserSqliteRepository) DeleteUser(id int) {
-	db, err := sql.Open("sqlite3", "./foo.db")
+	db, err := sql.Open("sqlite", "./foo.db")
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +32,7 @@ func (r *UserSqliteRepository) DeleteUser(id int) {
 }
 
 func (r *UserSqliteRepository) GetAllUsers() []entities.User {
-	db, err := sql.Open("sqlite3", "./foo.db")
+	db, err := sql.Open("sqlite", "./foo.db")
 	if err != nil {
 		panic(err)
 	}
@@ -54,7 +55,7 @@ func (r *UserSqliteRepository) GetAllUsers() []entities.User {
 }
 
 func (r *UserSqliteRepository) AddUser(user entities.User) (int64, error) {
-	db, err := sql.Open("sqlite3", "./foo.db")
+	db, err := sql.Open("sqlite", "./foo.db")
 	if err != nil {
 		return -1, err
 	}
@@ -69,7 +70,7 @@ func (r *UserSqliteRepository) AddUser(user entities.User) (int64, error) {
 }
 
 func (r *UserSqliteRepository) FindUserById(id int) (*entities.User, error) {
-	db, err := sql.Open("sqlite3", "./foo.db")
+	db, err := sql.Open("sqlite", "./foo.db")
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +85,7 @@ func (r *UserSqliteRepository) FindUserById(id int) (*entities.User, error) {
 }
 
 func (r *UserSqliteRepository) FindUserByName(name string) (*entities.User, error) {
-	db, err := sql.Open("sqlite3", "./foo.db")
+	db, err := sql.Open("sqlite", "./foo.db")
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +100,7 @@ func (r *UserSqliteRepository) FindUserByName(name string) (*entities.User, erro
 }
 
 func (r *UserSqliteRepository) FindUserByEmail(email string) (*entities.User, error) {
-	db, err := sql.Open("sqlite3", "./foo.db")
+	db, err := sql.Open("sqlite", "./foo.db")
 	if err != nil {
 		return nil, err
 	}
