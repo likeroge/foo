@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"ego.dev21/greetings/internal/database"
 	"ego.dev21/greetings/internal/presentation/http/handlers/users"
@@ -21,12 +21,16 @@ func main() {
 
 	err := database.InitDB()
 	if err != nil {
+		fmt.Println(err)
 		log.Fatal(err)
 	}
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "5000"
-	}
+	//port := os.Getenv("PORT")
+	//if port == "" {
+	//	port = "5000"
+	//}
 	log.Println("Server started on http://localhost:5000")
-	http.ListenAndServe(":"+port, nil)
+	er := http.ListenAndServe(":5000", nil)
+	if er != nil {
+		panic(err)
+	}
 }
