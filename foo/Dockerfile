@@ -25,18 +25,13 @@ WORKDIR /root/
 # Копируем бинарник из этапа сборки
 COPY --from=builder /app/myapp .
 
-# RUN mkdir -p /root/data
+RUN mkdir -p /root/data
 
-# RUN mkdir -p /root/data && \
-#     chown -R myuser:appgroup /root
-
+VOLUME ["/root/data"]
 
 # Создаем непривилегированного пользователя
 RUN adduser -D myuser
 USER myuser
-
-RUN mkdir -p /root/data && \
-    chown -R myuser /root/data
 
 EXPOSE 5000
 
