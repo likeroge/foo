@@ -12,7 +12,7 @@ services:
       - PORT=5000
     restart: unless-stopped
     volumes:
-      - ./foo:/root/myapp
+      - ./foo:/root/
     networks:
       - app-network
   frontend:
