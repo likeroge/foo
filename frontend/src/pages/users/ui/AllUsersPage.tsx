@@ -17,7 +17,6 @@ export const AllUsersPage = () => {
       }
     })();
   }, []);
-  console.log(users);
 
   return (
     <PageLayout>
