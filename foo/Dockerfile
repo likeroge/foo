@@ -27,7 +27,7 @@ COPY --from=builder /app/myapp .
 
 RUN mkdir -p /root/data
 
-VOLUME ["/root/data"]
+# VOLUME ["/root/data"]
 
 # Создаем непривилегированного пользователя
 # RUN adduser -D myuser
