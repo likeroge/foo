@@ -3,18 +3,21 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
-	_ "github.com/glebarez/go-sqlite"
+	_ "modernc.org/sqlite"
 )
 
 func InitDB() error {
 	db, err := sql.Open("sqlite", "./foo.db")
 	if err != nil {
+		log.Println(err)
 		panic(err)
 	}
 	defer db.Close()
 	result, err := db.Exec("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT)")
 	if err != nil {
+		log.Println(err)
 		panic(err)
 	}
 	fmt.Printf("result: %d\n", result)

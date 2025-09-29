@@ -6,7 +6,6 @@ import (
 	"ego.dev21/greetings/internal/database"
 	"ego.dev21/greetings/internal/entities"
 	"ego.dev21/greetings/internal/repository"
-	_ "github.com/glebarez/go-sqlite"
 )
 
 type UserSqliteRepository struct {
@@ -37,7 +36,11 @@ func (r *UserSqliteRepository) GetAllUsers() []entities.User {
 		panic(err)
 	}
 	defer rows.Close()
-	var users []entities.User
+	var users []entities.User = []entities.User{}
+	// if !rows.Next() {
+	// 	users = []entities.User{}
+	// 	return users
+	// }
 	for rows.Next() {
 		var user entities.User
 		if err := rows.Scan(&user.Id, &user.Name, &user.Email); err != nil {
