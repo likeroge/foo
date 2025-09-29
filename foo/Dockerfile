@@ -30,8 +30,8 @@ RUN mkdir -p /root/data
 VOLUME ["/root/data"]
 
 # Создаем непривилегированного пользователя
-RUN adduser -D myuser
-USER myuser
+# RUN adduser -D myuser
+# USER myuser
 
 EXPOSE 5000
 
