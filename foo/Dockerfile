@@ -25,7 +25,7 @@ WORKDIR /root/
 # Копируем бинарник из этапа сборки
 COPY --from=builder /app/myapp .
 
-VOLUME ./
+VOLUME ["./"]
 
 # Создаем непривилегированного пользователя
 RUN adduser -D myuser
