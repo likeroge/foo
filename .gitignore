@@ -14,6 +14,7 @@ frontend/dist-ssr
 
 foo/*.exe
 foo/*.db
+foo/data/*.db
 
 # Editor directories and files
 .vscode/*
