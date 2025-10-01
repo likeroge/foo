@@ -1,5 +1,10 @@
 import { PageLayout } from "../../../shared/page-layout";
+import { PageTitle } from "../../../shared/page-title";
 
 export const AboutPage = () => {
-  return <PageLayout>AboutPage</PageLayout>;
+  return (
+    <PageLayout>
+      <PageTitle title="AboutPage" />
+    </PageLayout>
+  );
 };

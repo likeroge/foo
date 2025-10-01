@@ -7,9 +7,14 @@ import (
 	"os"
 
 	"ego.dev21/greetings/internal/database"
+	"ego.dev21/greetings/internal/presentation/http/handlers/files"
+	"ego.dev21/greetings/internal/presentation/http/handlers/ofp"
 	"ego.dev21/greetings/internal/presentation/http/handlers/users"
 )
 
+//	func main() {
+//		ofpParser.ParseOfp("Hello world asdasdas asdasd asdasd , 123123")
+//	}
 func main() {
 	http.HandleFunc("/hello", users.GetHello)
 	// users
@@ -19,6 +24,12 @@ func main() {
 	http.HandleFunc("/api/user/find/name/{userName}", users.FindUserByName)
 	http.HandleFunc("/api/user/find/email/{userEmail}", users.FindUserByEmail)
 	http.HandleFunc("/api/user/find/id/{userId}", users.FindUserById)
+
+	//files
+	http.HandleFunc("/api/file/send", files.SendFile)
+
+	//ofp
+	http.HandleFunc("/api/ofp/send", ofp.PostOfpToBackend)
 
 	err := database.InitDB()
 	if err != nil {
