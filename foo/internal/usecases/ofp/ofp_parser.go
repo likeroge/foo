@@ -54,7 +54,8 @@ func ParseFlightData(content string) (*entities.OFP, error) {
 	for _, match := range matchesAltnAirports {
 		altnAirports = append(altnAirports, match[1])
 	}
-	var ofp entities.OFP = entities.OFP{
+	// var ofp entities.OFP = entities.OFP{}
+	ofp := &entities.OFP{
 		FileName:     "",
 		IcaoFrom:     matchesMetaData[4],
 		IcaoTo:       matchesMetaData[5],
@@ -69,6 +70,6 @@ func ParseFlightData(content string) (*entities.OFP, error) {
 		RegNumber:    matchesMetaData[2],
 	}
 	// fmt.Println(ofp)
-	return &ofp, nil
+	return ofp, nil
 
 }
