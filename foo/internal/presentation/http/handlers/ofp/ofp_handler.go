@@ -24,7 +24,10 @@ func PostOfpToBackend(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 		ofpParser := OfpParser.NewOFPParser(pdfContent)
-		ofpParser.ParseOfp()
-
+		parsedOfp, err := ofpParser.ParseOfp()
+		if err != nil {
+			log.Println(err)
+		}
+		fmt.Println(parsedOfp)
 	}
 }
