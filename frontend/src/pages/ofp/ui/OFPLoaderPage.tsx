@@ -6,6 +6,7 @@ import { Button } from "../../../shared/button";
 import { Form } from "../../../shared/form";
 import type { ApiError } from "../../../entities/ApiError";
 import { Flex } from "../../../shared/flex";
+import { ErrorMessage } from "../../../shared/error-message";
 
 export const OFPLoaderPage = () => {
   const [file, setFile] = useState<File>();
@@ -24,7 +25,7 @@ export const OFPLoaderPage = () => {
     e.preventDefault();
     if (!file) return;
     if (!file.name.endsWith(".pdf")) {
-      console.error("File is not .pdf");
+      setApiError({ message: "File is not .pdf" });
       return;
     }
     try {
@@ -45,7 +46,7 @@ export const OFPLoaderPage = () => {
             <input type="file" name="file" onChange={handleFileChange} />
             {file && file.name && <Button name="Send" colorscheme="primary" />}
           </Form>
-          {apiError && <p>{apiError.message}</p>}
+          {apiError && <ErrorMessage message={apiError.message} />}
         </Flex>
         <Flex
           direction="column"
