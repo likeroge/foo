@@ -38,6 +38,9 @@ func ParseFlightData(content string) (*entities.OFP, error) {
 		return nil, err
 	}
 	matchesMetaData := re.FindStringSubmatch(content)
+	if matchesMetaData == nil {
+		return nil, fmt.Errorf("неверный формат OFP")
+	}
 	// for i, match := range matchesMetaData {
 	// 	fmt.Printf("Match %d: %s\n", i, match)
 	// }
@@ -56,18 +59,18 @@ func ParseFlightData(content string) (*entities.OFP, error) {
 	}
 	// var ofp entities.OFP = entities.OFP{}
 	ofp := &entities.OFP{
-		FileName:     "",
-		IcaoFrom:     matchesMetaData[4],
-		IcaoTo:       matchesMetaData[5],
-		ETD:          matchesMetaData[6],
-		ATD:          "",
-		ETA:          matchesMetaData[8],
-		ATA:          "",
+		IcaoFrom: matchesMetaData[4],
+		IcaoTo:   matchesMetaData[5],
+		ETD:      matchesMetaData[6],
+		// ATD:          "",
+		ETA: matchesMetaData[8],
+		// ATA:          "",
 		FlightNumber: matchesMetaData[1],
 		DOF:          matchesMetaData[3],
-		AllAirports:  altnAirports,
+		AllAirports:  append(altnAirports, matchesMetaData[4], matchesMetaData[5]),
 		AllFirs:      nil,
 		RegNumber:    matchesMetaData[2],
+		AltAirports:  altnAirports,
 	}
 	// fmt.Println(ofp)
 	return ofp, nil

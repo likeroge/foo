@@ -13,6 +13,12 @@
   cursor: pointer;
   width: 150px;
 }
+input {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  max-width: 250px;
+}
 
 .addUserButton:hover {
   background-color: darkgreen;

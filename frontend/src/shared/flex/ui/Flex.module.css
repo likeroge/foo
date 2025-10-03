@@ -1,0 +1,24 @@
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flexStart {
+  justify-content: flex-start;
+}
+.flexEnd {
+  justify-content: flex-end;
+}
+.flexCenter {
+  justify-content: center;
+}
+
+.spaceBetween {
+  justify-content: space-between;
+}

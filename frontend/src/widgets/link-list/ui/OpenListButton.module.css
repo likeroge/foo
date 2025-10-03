@@ -1,0 +1,18 @@
+.openListButton {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px;
+}
+
+.openListButton:hover {
+  background-color: darkgreen;
+}
+
+.openListButton:active {
+  background-color: green;
+  transform: translateY(2px);
+}

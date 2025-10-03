@@ -9,6 +9,10 @@ export const appRouter = createBrowserRouter([
     element: <HomePage />,
   },
   {
+    path: "/home",
+    element: <HomePage />,
+  },
+  {
     path: "/about",
     element: <AboutPage />,
   },
