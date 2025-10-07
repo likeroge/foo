@@ -1,4 +1,4 @@
-package ofp
+package ofpusecases
 
 import (
 	"fmt"

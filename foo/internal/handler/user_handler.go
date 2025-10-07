@@ -1,4 +1,4 @@
-package users
+package handler
 
 import (
 	"encoding/json"
@@ -8,24 +8,46 @@ import (
 	"strconv"
 
 	"ego.dev21/greetings/internal/entities"
-	sqliterepos "ego.dev21/greetings/internal/repository/sqlite_repos"
+	"ego.dev21/greetings/internal/repository"
 )
+
+type UserHandler struct {
+	Repository *repository.Repositories
+}
+
+func NewUserHandler(repos *repository.Repositories) *UserHandler {
+	return &UserHandler{
+		Repository: repos,
+	}
+}
+
+func (h *UserHandler) GetHello(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	allUsers := h.Repository.UserRepository.GetAllUsers()
+	resp, err := json.Marshal(allUsers)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write(resp)
+}
 
 func GetHello(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello, World!"))
 }
 
-func FindAllUsers(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) FindAllUsers(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		repository := sqliterepos.NewUserSqliteRepository()
-		users := repository.GetAllUsers()
+		users := h.Repository.UserRepository.GetAllUsers()
+		// repository := sqliterepos.NewUserSqliteRepository()
+		// users := repository.GetAllUsers()
 		json.NewEncoder(w).Encode(users)
 	}
 }
 
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
@@ -37,13 +59,14 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 		fmt.Println(pathVal)
-		repository := sqliterepos.NewUserSqliteRepository()
-		repository.DeleteUser(intVal)
+		h.Repository.UserRepository.DeleteUser(intVal)
+		// repository := sqliterepos.NewUserSqliteRepository()
+		// repository.DeleteUser(intVal)
 		w.Write([]byte("User deleted!"))
 	}
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
@@ -58,9 +81,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(buf, &u)
 		fmt.Println(u)
 		fmt.Println(u.Name, u.Email)
-		repository := sqliterepos.NewUserSqliteRepository()
+		// repository := sqliterepos.NewUserSqliteRepository()
 
-		result, err := repository.AddUser(entities.User{Name: u.Name, Email: u.Email})
+		// result, err := repository.AddUser(entities.User{Name: u.Name, Email: u.Email})
+		result, err := h.Repository.UserRepository.AddUser(entities.User{Name: u.Name, Email: u.Email})
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -70,7 +94,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func FindUserById(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) FindUserById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
@@ -82,8 +106,9 @@ func FindUserById(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 		fmt.Println(pathVal)
-		repository := sqliterepos.NewUserSqliteRepository()
-		user, err := repository.FindUserById(intVal)
+		// repository := sqliterepos.NewUserSqliteRepository()
+		// user, err := repository.FindUserById(intVal)
+		user, err := h.Repository.UserRepository.FindUserById(intVal)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -91,7 +116,7 @@ func FindUserById(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func FindUserByName(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) FindUserByName(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
@@ -99,8 +124,9 @@ func FindUserByName(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		pathVal := r.PathValue("userName")
 		fmt.Println(pathVal)
-		repository := sqliterepos.NewUserSqliteRepository()
-		user, err := repository.FindUserByName(pathVal)
+		// repository := sqliterepos.NewUserSqliteRepository()
+		// user, err := repository.FindUserByName(pathVal)
+		user, err := h.Repository.UserRepository.FindUserByName(pathVal)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -108,7 +134,7 @@ func FindUserByName(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func FindUserByEmail(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) FindUserByEmail(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
@@ -116,8 +142,9 @@ func FindUserByEmail(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		pathVal := r.PathValue("userEmail")
 		fmt.Println(pathVal)
-		repository := sqliterepos.NewUserSqliteRepository()
-		user, err := repository.FindUserByEmail(pathVal)
+		// repository := sqliterepos.NewUserSqliteRepository()
+		// user, err := repository.FindUserByEmail(pathVal)
+		user, err := h.Repository.UserRepository.FindUserByEmail(pathVal)
 		if err != nil {
 			fmt.Println(err)
 		}

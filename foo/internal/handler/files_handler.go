@@ -1,11 +1,23 @@
-package files
+package handler
 
 import (
 	"net/http"
 	"os"
+
+	"ego.dev21/greetings/internal/repository"
 )
 
-func SendFile(w http.ResponseWriter, r *http.Request) {
+type FilesHandler struct {
+	Repositories *repository.Repositories
+}
+
+func NewFilesHandler(repositories *repository.Repositories) *FilesHandler {
+	return &FilesHandler{
+		Repositories: repositories,
+	}
+}
+
+func (h *FilesHandler) SendFile(w http.ResponseWriter, r *http.Request) {
 
 	// w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/octet-stream")

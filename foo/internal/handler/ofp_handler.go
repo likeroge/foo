@@ -1,4 +1,4 @@
-package ofp
+package handler
 
 import (
 	"encoding/json"
@@ -7,11 +7,23 @@ import (
 	"net/http"
 
 	"ego.dev21/greetings/internal/entities"
-	OfpParser "ego.dev21/greetings/internal/usecases/ofp"
+	"ego.dev21/greetings/internal/repository"
 	"ego.dev21/greetings/internal/utils"
+
+	OfpParser "ego.dev21/greetings/internal/usecases/ofp_use_cases"
 )
 
-func PostOfpToBackend(w http.ResponseWriter, r *http.Request) {
+type OfpHandler struct {
+	Repositories *repository.Repositories
+}
+
+func NewOfpHandler(repositories *repository.Repositories) *OfpHandler {
+	return &OfpHandler{
+		Repositories: repositories,
+	}
+}
+
+func (h *OfpHandler) PostOfpToBackend(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 

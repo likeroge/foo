@@ -1,4 +1,4 @@
-package repository
+package userrepos
 
 import "ego.dev21/greetings/internal/entities"
 
