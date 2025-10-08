@@ -13,6 +13,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./foo/data:/root/data
+      - ./foo/migrations:/root/migrations
     networks:
       - app-network
   frontend:

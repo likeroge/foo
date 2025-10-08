@@ -26,6 +26,7 @@ WORKDIR /root/
 COPY --from=builder /app/myapp .
 
 RUN mkdir -p /root/data
+RUN mkdir -p /root/migrations
 
 # VOLUME ["/root/data"]
 
