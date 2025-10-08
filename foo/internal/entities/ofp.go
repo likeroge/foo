@@ -1,6 +1,7 @@
 package entities
 
 type OFP struct {
+	Id       int    `json:"id"`
 	IcaoFrom string `json:"icaoFrom"`
 	IcaoTo   string `json:"icaoTo"`
 	ETD      string `json:"etd"`

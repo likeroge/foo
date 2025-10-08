@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import { AboutPage, HomePage } from "../../pages";
 import { AddUserPage, AllUsersPage, FindUserPage } from "../../pages/users";
-import { OFPLoaderPage } from "../../pages/ofp";
+import { OFPListPage, OFPLoaderPage } from "../../pages/ofp";
 
 export const appRouter = createBrowserRouter([
   {
@@ -31,6 +31,10 @@ export const appRouter = createBrowserRouter([
   {
     path: "/ofp/load",
     element: <OFPLoaderPage />,
+  },
+  {
+    path: "/ofp/list",
+    element: <OFPListPage />,
   },
   {
     path: "*",

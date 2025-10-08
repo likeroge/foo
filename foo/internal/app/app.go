@@ -40,12 +40,15 @@ func NewApplication() *Application {
 }
 
 func (app *Application) SetupDatabase() {
-	err := database.InitDB()
+	// err := database.InitDB()
+	_, err := database.ExecuteSQLFileLineByLine("./migrations/init_migrations.sql")
 	if err != nil {
+		log.Println("Error executing statement:", err)
 		log.Fatal(err)
 	}
 
 	app.Db = database.GetDB()
+	// app.Db = db
 }
 
 func (app *Application) SetupRepositories() {
