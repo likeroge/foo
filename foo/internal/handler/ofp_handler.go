@@ -9,9 +9,10 @@ import (
 
 	"ego.dev21/greetings/internal/entities"
 	"ego.dev21/greetings/internal/repository"
+	"ego.dev21/greetings/internal/usecases"
 	"ego.dev21/greetings/internal/utils"
 
-	OfpParser "ego.dev21/greetings/internal/usecases/ofp_use_cases"
+	OfpParser "ego.dev21/greetings/internal/usecases"
 )
 
 type OfpHandler struct {
@@ -58,7 +59,7 @@ func (h *OfpHandler) DeleteOFPInfoById(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *OfpHandler) GetAllOFPInfo(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
+	if r.Method == http.MethodGet {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json")
 
@@ -69,6 +70,9 @@ func (h *OfpHandler) GetAllOFPInfo(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(err.Error()))
 		}
 		json.NewEncoder(w).Encode(ofpInfo)
+	} else {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
 	}
 }
 
@@ -104,7 +108,20 @@ func (h *OfpHandler) PostOfpToBackend(w http.ResponseWriter, r *http.Request) {
 
 		pdfContent.ParsedOfp = parsedOfp
 		fmt.Println(parsedOfp)
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(parsedOfp)
+
+		byteContent, err := json.Marshal(parsedOfp)
+		if err != nil {
+			log.Println(err)
+			w.Write([]byte(err.Error()))
+			return
+		}
+		fp := usecases.NewFileProducer(&byteContent)
+		// fp.BinaryContent = &byteContent
+		fp.FileName = "my_file"
+		fp.FileType = "txt"
+		fp.SendFileViaHttp(w)
+
+		// w.Header().Set("Content-Type", "application/json")
+		// json.NewEncoder(w).Encode(parsedOfp)
 	}
 }

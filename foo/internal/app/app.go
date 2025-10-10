@@ -33,7 +33,7 @@ func NewApplication() *Application {
 	router := handler.SetupRoutes(app.Repositories)
 
 	app.Port = port
-	app.MainHandler = &router.HttpHandler
+	app.MainHandler = router.HttpHandler
 	// app.Server = server
 
 	return app
@@ -62,7 +62,6 @@ func (app *Application) SetupRepositories() {
 func (app *Application) Run() {
 	log.Println("Server started on http://localhost" + ":" + app.Port)
 	err := http.ListenAndServe(":"+app.Port, *app.MainHandler)
-	// err := app.Server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}

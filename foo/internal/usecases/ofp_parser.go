@@ -1,4 +1,4 @@
-package ofpusecases
+package usecases
 
 import (
 	"fmt"

@@ -7,11 +7,12 @@ import { Form } from "../../../shared/form";
 import type { ApiError } from "../../../entities/ApiError";
 import { Flex } from "../../../shared/flex";
 import { ErrorMessage } from "../../../shared/error-message";
+import type { ApiResponse } from "../../../entities/ApiResponse";
 
 export const OFPLoaderPage = () => {
   const [file, setFile] = useState<File>();
   const [apiError, setApiError] = useState<ApiError>();
-  const [apiResponse, setApiResponse] = useState<string>();
+  const [apiResponse, setApiResponse] = useState<ApiResponse>();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.files);
     if (!e.target.files) return;

@@ -12,7 +12,7 @@ type Router struct {
 	OFPHandler   *OfpHandler
 	FilesHandler *FilesHandler
 
-	HttpHandler  http.Handler
+	HttpHandler  *http.Handler
 	Repositories *repository.Repositories
 }
 
@@ -65,7 +65,7 @@ func SetupRoutes(repositories *repository.Repositories) *Router {
 	// topServerMux.Handle("/api/", http.StripPrefix("/api", *Chain(protectedServerMux, middleware.AuthMiddleware)))
 	topServerMux.Handle("/api/", http.StripPrefix("/api", protectedServerMux))
 
-	r.HttpHandler = *Chain(topServerMux, middleware.LoggerMiddleware)
+	r.HttpHandler = Chain(topServerMux, middleware.LoggerMiddleware)
 
 	return r
 }
