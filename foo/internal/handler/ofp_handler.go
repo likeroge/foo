@@ -11,8 +11,6 @@ import (
 	"ego.dev21/greetings/internal/repository"
 	"ego.dev21/greetings/internal/usecases"
 	"ego.dev21/greetings/internal/utils"
-
-	OfpParser "ego.dev21/greetings/internal/usecases"
 )
 
 type OfpHandler struct {
@@ -92,7 +90,7 @@ func (h *OfpHandler) PostOfpToBackend(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(err.Error()))
 			return
 		}
-		ofpParser := OfpParser.NewOFPParser(pdfContent.PdfContent)
+		ofpParser := usecases.NewOFPParser(pdfContent.PdfContent)
 		parsedOfp, err := ofpParser.ParseOfp()
 		if err != nil {
 			log.Println(err)
@@ -103,7 +101,15 @@ func (h *OfpHandler) PostOfpToBackend(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(e)
 			return
 		}
-		lastInsertedId := h.Repositories.OFPRpository.CreateOFPInfo(parsedOfp)
+		lastInsertedId, err := h.Repositories.OFPRpository.CreateOFPInfo(parsedOfp)
+		if err != nil {
+			log.Println(err)
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			e := entities.NewAPIError(err.Error())
+			w.WriteHeader(http.StatusFound)
+			json.NewEncoder(w).Encode(e)
+			return
+		}
 		fmt.Println(lastInsertedId)
 
 		pdfContent.ParsedOfp = parsedOfp
@@ -116,12 +122,8 @@ func (h *OfpHandler) PostOfpToBackend(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		fp := usecases.NewFileProducer(&byteContent)
-		// fp.BinaryContent = &byteContent
 		fp.FileName = "my_file"
 		fp.FileType = "txt"
 		fp.SendFileViaHttp(w)
-
-		// w.Header().Set("Content-Type", "application/json")
-		// json.NewEncoder(w).Encode(parsedOfp)
 	}
 }

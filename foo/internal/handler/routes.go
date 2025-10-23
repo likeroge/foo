@@ -42,6 +42,7 @@ func SetupRoutes(repositories *repository.Repositories) *Router {
 
 	////////////
 	publicServerMux.HandleFunc("/hello", r.UserHandler.GetHello)
+	publicServerMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	//user
 	protectedServerMux.HandleFunc("/user/all", r.UserHandler.FindAllUsers)
@@ -58,7 +59,10 @@ func SetupRoutes(repositories *repository.Repositories) *Router {
 	protectedServerMux.HandleFunc("/ofp/delete/{id}", r.OFPHandler.DeleteOFPInfoById)
 
 	// file
-	protectedServerMux.HandleFunc("/file/send", r.OFPHandler.PostOfpToBackend)
+	protectedServerMux.HandleFunc("/files/send", r.OFPHandler.PostOfpToBackend)
+
+	//template
+	publicServerMux.HandleFunc("/template", r.FilesHandler.GetHelloTemplate)
 
 	// configure server-mux routes
 	topServerMux.Handle("/", publicServerMux)

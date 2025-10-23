@@ -10,8 +10,8 @@ type OFP struct {
 	// ATA          string   `json:"ata"`
 	FlightNumber string   `json:"flightNumber"`
 	DOF          string   `json:"dof"`
-	AllAirports  []string `json:"allAirports"`
-	AllFirs      []string `json:"allFirs"`
+	AllAirports  []string `json:"allAirports,omitempty"`
+	AllFirs      []string `json:"allFirs,omitempty"`
 	RegNumber    string   `json:"regNumber"`
-	AltAirports  []string `json:"altAirports"`
+	AltAirports  []string `json:"altAirports,omitempty"`
 }

@@ -31,7 +31,6 @@ export const OFPLoaderPage = () => {
     }
     try {
       const result = await sendOFP(file);
-      console.log(result);
       setApiResponse(result);
     } catch (error) {
       setApiError(error as ApiError);

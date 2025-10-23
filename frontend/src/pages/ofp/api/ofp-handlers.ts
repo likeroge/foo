@@ -12,6 +12,8 @@ export const sendOFP = async (file: File) => {
         "Content-Type": "multipart/form-data",
       },
     });
+    console.log(response);
+
     const fileName =
       response.headers["content-disposition"].split("=")[1] ?? "download.txt";
 
