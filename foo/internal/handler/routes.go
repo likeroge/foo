@@ -42,7 +42,7 @@ func SetupRoutes(repositories *repository.Repositories) *Router {
 
 	////////////
 	publicServerMux.HandleFunc("/hello", r.UserHandler.GetHello)
-	publicServerMux.Handle("/api/static/", http.StripPrefix("/api/static/", http.FileServer(http.Dir("static"))))
+	protectedServerMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	//user
 	protectedServerMux.HandleFunc("/user/all", r.UserHandler.FindAllUsers)
