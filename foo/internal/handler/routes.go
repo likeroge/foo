@@ -62,7 +62,7 @@ func SetupRoutes(repositories *repository.Repositories) *Router {
 	protectedServerMux.HandleFunc("/files/send", r.OFPHandler.PostOfpToBackend)
 
 	//template
-	publicServerMux.HandleFunc("/template", r.FilesHandler.GetHelloTemplate)
+	protectedServerMux.HandleFunc("/template", r.FilesHandler.GetHelloTemplate)
 
 	// configure server-mux routes
 	topServerMux.Handle("/", publicServerMux)
