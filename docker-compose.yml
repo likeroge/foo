@@ -14,6 +14,8 @@ services:
     volumes:
       - ./foo/data:/root/data
       - ./foo/migrations:/root/migrations
+      - ./foo/static:/root/static
+      - ./foo/templates:/root/templates
     networks:
       - app-network
   frontend:

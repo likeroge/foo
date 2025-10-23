@@ -27,6 +27,8 @@ COPY --from=builder /app/myapp .
 
 RUN mkdir -p /root/data
 RUN mkdir -p /root/migrations
+RUN mkdir -p /root/static
+RUN mkdir -p /root/templates
 
 # VOLUME ["/root/data"]
 
