@@ -22,5 +22,6 @@ CREATE TABLE IF NOT EXISTS ofps (
     fuel_flow INTEGER,
     trip_fuel INTEGER,
     flight_time TEXT,
+    rte TEXT,
     UNIQUE (icao_from, icao_to, flight_number, dof, reg_number)
 );

@@ -28,18 +28,23 @@ func (o *OFPSQLiteRepo) GetOFPInfoById(id int) *entities.OFP {
 }
 
 func (o *OFPSQLiteRepo) CreateOFPInfo(ofp *entities.OFP) (int64, error) {
-
 	sqlStr := `
-					INSERT INTO ofps (icao_from, icao_to, etd, eta, flight_number, dof, reg_number, created_at, updated_at)
-					VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+					INSERT INTO ofps (icao_from, icao_to, etd, eta, flight_number, dof, reg_number, distance, wind, fuel_flow, trip_fuel, flight_time, rte, created_at, updated_at)
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, datetime('now'), datetime('now'))
 					ON CONFLICT(icao_from, icao_to, flight_number, dof, reg_number) 
 					DO UPDATE SET
+						distance = excluded.distance,
+						wind = excluded.wind,
+						fuel_flow = excluded.fuel_flow,
+						trip_fuel = excluded.trip_fuel,
+						flight_time = excluded.flight_time,
 						etd = excluded.etd,
 						eta  = excluded.eta,
+						rte = excluded.rte,
 						updated_at = datetime('now');
 				`
 
-	result, err := o.db.Exec(sqlStr, ofp.IcaoFrom, ofp.IcaoTo, ofp.ETD, ofp.ETA, ofp.FlightNumber, ofp.DOF, ofp.RegNumber)
+	result, err := o.db.Exec(sqlStr, ofp.IcaoFrom, ofp.IcaoTo, ofp.ETD, ofp.ETA, ofp.FlightNumber, ofp.DOF, ofp.RegNumber, ofp.Distance, ofp.Wind, ofp.FuelFlow, ofp.TripFuel, ofp.FlightTime, ofp.Rte)
 	if err != nil {
 		log.Println("Error due to insert ofp", err)
 		return -1, err
