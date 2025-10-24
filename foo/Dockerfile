@@ -29,6 +29,7 @@ RUN mkdir -p /root/data
 RUN mkdir -p /root/migrations
 RUN mkdir -p /root/static
 RUN mkdir -p /root/templates
+RUN mkdir -p /root/logs
 
 # VOLUME ["/root/data"]
 

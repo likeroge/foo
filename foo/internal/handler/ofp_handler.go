@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -31,7 +30,7 @@ func (h *OfpHandler) GetOFPInfoById(w http.ResponseWriter, r *http.Request) {
 		pathVal := r.PathValue("id")
 		intVal, err := strconv.Atoi(pathVal)
 		if err != nil {
-			fmt.Println(err)
+			log.Println("GetOFPInfoById error during Atoi: ", err)
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte(err.Error()))
 		}
@@ -48,7 +47,7 @@ func (h *OfpHandler) DeleteOFPInfoById(w http.ResponseWriter, r *http.Request) {
 		pathVal := r.PathValue("id")
 		intVal, err := strconv.Atoi(pathVal)
 		if err != nil {
-			fmt.Println(err)
+			log.Println("DeleteOFPInfoById error during Atoi: ", err)
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte(err.Error()))
 		}
@@ -63,7 +62,6 @@ func (h *OfpHandler) GetAllOFPInfo(w http.ResponseWriter, r *http.Request) {
 
 		ofpInfo, err := h.Repositories.OFPRpository.GetAllOFPInfo()
 		if err != nil {
-			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte(err.Error()))
 		}
@@ -80,49 +78,49 @@ func (h *OfpHandler) PostOfpToBackend(w http.ResponseWriter, r *http.Request) {
 
 		file, fileHeader, err := r.FormFile("file")
 		if err != nil {
-			fmt.Println(err)
+			log.Println("PostOfpToBackend error during FormFile: ", err)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(err.Error()))
+			return
 		}
 		defer file.Close()
 
 		pdfContent, err := utils.ReadPDFContent(file, fileHeader)
 		if err != nil {
-			log.Println(err)
+			log.Println("PostOfpToBackend -> ReadPDFContent error: ", err)
+			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte(err.Error()))
 			return
 		}
 		ofpParser := usecases.NewOFPParser(pdfContent.PdfContent)
 		parsedOfp, err := ofpParser.ParseOfp()
 		if err != nil {
-			log.Println(err)
+			log.Println("PostOfpToBackend -> ParseOfp error: ", err)
 			w.Header().Set("Content-Type", "application/json")
 			e := entities.NewAPIError(err.Error())
 			w.WriteHeader(http.StatusBadRequest)
-
 			json.NewEncoder(w).Encode(e)
 			return
 		}
-		lastInsertedId, err := h.Repositories.OFPRpository.CreateOFPInfo(parsedOfp)
+		_, err = h.Repositories.OFPRpository.CreateOFPInfo(parsedOfp)
 		if err != nil {
-			log.Println(err)
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			e := entities.NewAPIError(err.Error())
 			w.WriteHeader(http.StatusFound)
 			json.NewEncoder(w).Encode(e)
 			return
 		}
-		fmt.Println(lastInsertedId)
 
 		pdfContent.ParsedOfp = parsedOfp
-		fmt.Println(parsedOfp)
 
 		byteContent, err := json.Marshal(parsedOfp)
 		if err != nil {
-			log.Println(err)
+			log.Println("PostOfpToBackend -> Marshal(parsedOfp) error: ", err)
 			w.Write([]byte(err.Error()))
 			return
 		}
 		fp := usecases.NewFileProducer(&byteContent)
-		fp.FileName = "my_file"
+		fp.FileName = "ofp_data " + parsedOfp.RegNumber + " " + parsedOfp.FlightNumber + " " + parsedOfp.IcaoFrom + " " + parsedOfp.IcaoTo
 		fp.FileType = "txt"
 		fp.SendFileViaHttp(w)
 	}

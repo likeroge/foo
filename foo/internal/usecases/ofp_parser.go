@@ -3,6 +3,7 @@ package usecases
 import (
 	"fmt"
 	"regexp"
+	"strconv"
 
 	"ego.dev21/greetings/internal/entities"
 )
@@ -25,10 +26,6 @@ func (o *OFPParser) ParseOfp() (*entities.OFP, error) {
 	return result, nil
 }
 
-// func ParseOfp(content string) entities.OFP {
-
-// }
-
 func ParseFlightData(content string) (*entities.OFP, error) {
 	// Get flight Metadata from OFP
 	patternMetaData := `([A-Z]{2,3}\d{1,4})\s+([A-Z0-9]{1,7})\s+(\d{2}-\d{2}-\d{2})\s+([A-Z]{4})-([A-Z]{4})\s+(\d{4})/(\d{4})\s+(\d{4})/(\d{4})\s+`
@@ -41,9 +38,28 @@ func ParseFlightData(content string) (*entities.OFP, error) {
 	if matchesMetaData == nil {
 		return nil, fmt.Errorf("неверный формат OFP")
 	}
-	// for i, match := range matchesMetaData {
-	// 	fmt.Printf("Match %d: %s\n", i, match)
-	// }
+
+	// Get distance, wind and fuel flow
+	patternDistWindFlow := `DIST/AIR\s+(\d+)\s+AVG W\/C\s+([P,M]\d+)\s+AVG FF (\d+)`
+	re, err = regexp.Compile(patternDistWindFlow)
+	if err != nil {
+		return nil, err
+	}
+	matchesDistWindFlow := re.FindStringSubmatch(content)
+	if matchesDistWindFlow == nil {
+		return nil, fmt.Errorf("неверный формат OFP")
+	}
+
+	//Get trip fuel and time
+	patternTripFuelTime := `TRIP \w\w\w\w\s+(\d+)\s+(\d+)`
+	re, err = regexp.Compile(patternTripFuelTime)
+	if err != nil {
+		return nil, err
+	}
+	matchesTripFuelTime := re.FindStringSubmatch(content)
+	if matchesTripFuelTime == nil {
+		return nil, fmt.Errorf("неверный формат OFP")
+	}
 
 	// Get Alternate Airports
 	patternAltnAirports := `ALT[1-5]:\s*([A-Z]{4})`
@@ -57,7 +73,36 @@ func ParseFlightData(content string) (*entities.OFP, error) {
 	for _, match := range matchesAltnAirports {
 		altnAirports = append(altnAirports, match[1])
 	}
-	// var ofp entities.OFP = entities.OFP{}
+
+	// Get Route
+	patternRte := `ROUTE:\s([A-Z0-9\s]+)`
+
+	re, err = regexp.Compile(patternRte)
+	if err != nil {
+		return nil, err
+	}
+
+	matchesRte := re.FindAllStringSubmatch(content, -1)
+
+	if matchesRte == nil {
+		return nil, fmt.Errorf("неверный формат OFP")
+	}
+
+	dist, err := strconv.Atoi(matchesDistWindFlow[1])
+	if err != nil {
+		return nil, err
+	}
+
+	fuelFlow, err := strconv.Atoi(matchesDistWindFlow[3])
+	if err != nil {
+		return nil, err
+	}
+
+	tripFuel, err := strconv.Atoi(matchesTripFuelTime[1])
+	if err != nil {
+		return nil, err
+	}
+
 	ofp := &entities.OFP{
 		IcaoFrom: matchesMetaData[4],
 		IcaoTo:   matchesMetaData[5],
@@ -71,8 +116,13 @@ func ParseFlightData(content string) (*entities.OFP, error) {
 		AllFirs:      nil,
 		RegNumber:    matchesMetaData[2],
 		AltAirports:  altnAirports,
+		Rte:          matchesRte[0][1],
+		Distance:     dist,
+		Wind:         matchesDistWindFlow[2],
+		FuelFlow:     fuelFlow,
+		TripFuel:     tripFuel,
+		FlightTime:   matchesTripFuelTime[2],
 	}
-	// fmt.Println(ofp)
 	return ofp, nil
 
 }

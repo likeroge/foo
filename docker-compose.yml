@@ -16,6 +16,7 @@ services:
       - ./foo/migrations:/root/migrations
       - ./foo/static:/root/static
       - ./foo/templates:/root/templates
+      - ./foo/logs:/root/logs
     networks:
       - app-network
   frontend:

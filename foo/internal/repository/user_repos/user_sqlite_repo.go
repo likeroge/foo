@@ -3,6 +3,7 @@ package userrepos
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	"ego.dev21/greetings/internal/entities"
 )
@@ -46,12 +47,21 @@ func (r *UserSqliteRepository) GetAllUsers() []entities.User {
 }
 
 func (r *UserSqliteRepository) AddUser(user entities.User) (int64, error) {
-	result, err := r.db.Exec("INSERT INTO users (name, email) VALUES (?, ?)", user.Name, user.Email)
+	sqlStr := `
+					INSERT INTO users (name, email, created_at, updated_at)
+					VALUES (?, ?, datetime('now'), datetime('now'))
+					ON CONFLICT(email) 
+					DO UPDATE SET
+						name = excluded.name,
+						updated_at = datetime('now');
+				`
+	result, err := r.db.Exec(sqlStr, user.Name, user.Email)
 	if err != nil {
+		log.Println("Error due to insert user", err)
 		return -1, err
 	}
-
-	return result.LastInsertId()
+	lastInsertedId, _ := result.LastInsertId()
+	return lastInsertedId, nil
 }
 
 func (r *UserSqliteRepository) FindUserById(id int) (*entities.User, error) {

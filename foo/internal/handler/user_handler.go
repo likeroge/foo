@@ -38,11 +38,10 @@ func GetHello(w http.ResponseWriter, r *http.Request) {
 
 func (h *UserHandler) FindAllUsers(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
+		log.Println("FindAllUser handler")
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		users := h.Repository.UserRepository.GetAllUsers()
-		// repository := sqliterepos.NewUserSqliteRepository()
-		// users := repository.GetAllUsers()
 		json.NewEncoder(w).Encode(users)
 	}
 }
@@ -56,12 +55,9 @@ func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		pathVal := r.PathValue("userId")
 		intVal, err := strconv.Atoi(pathVal)
 		if err != nil {
-			fmt.Println(err)
+			log.Println("DeleteUser -> error during Atoi:", err)
 		}
-		fmt.Println(pathVal)
 		h.Repository.UserRepository.DeleteUser(intVal)
-		// repository := sqliterepos.NewUserSqliteRepository()
-		// repository.DeleteUser(intVal)
 		w.Write([]byte("User deleted!"))
 	}
 }
@@ -75,20 +71,14 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		buf := make([]byte, r.ContentLength)
 		log.Println("POST")
 		r.Body.Read(buf)
-		fmt.Println(buf)
-		fmt.Println(string(buf))
 		var u entities.User
 		json.Unmarshal(buf, &u)
-		fmt.Println(u)
-		fmt.Println(u.Name, u.Email)
-		// repository := sqliterepos.NewUserSqliteRepository()
-
-		// result, err := repository.AddUser(entities.User{Name: u.Name, Email: u.Email})
-		result, err := h.Repository.UserRepository.AddUser(entities.User{Name: u.Name, Email: u.Email})
+		_, err := h.Repository.UserRepository.AddUser(entities.User{Name: u.Name, Email: u.Email})
 		if err != nil {
-			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
 		}
-		fmt.Println(result)
 		w.Write([]byte("User added!"))
 	}
 
@@ -103,14 +93,16 @@ func (h *UserHandler) FindUserById(w http.ResponseWriter, r *http.Request) {
 		pathVal := r.PathValue("userId")
 		intVal, err := strconv.Atoi(pathVal)
 		if err != nil {
-			fmt.Println(err)
+			log.Println("FindUserById -> error during Atoi:", err)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(err.Error()))
+			return
 		}
-		fmt.Println(pathVal)
-		// repository := sqliterepos.NewUserSqliteRepository()
-		// user, err := repository.FindUserById(intVal)
 		user, err := h.Repository.UserRepository.FindUserById(intVal)
 		if err != nil {
-			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
 		}
 		json.NewEncoder(w).Encode(user)
 	}
@@ -123,12 +115,13 @@ func (h *UserHandler) FindUserByName(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	if r.Method == "GET" {
 		pathVal := r.PathValue("userName")
-		fmt.Println(pathVal)
 		// repository := sqliterepos.NewUserSqliteRepository()
 		// user, err := repository.FindUserByName(pathVal)
 		user, err := h.Repository.UserRepository.FindUserByName(pathVal)
 		if err != nil {
-			fmt.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
 		}
 		json.NewEncoder(w).Encode(user)
 	}

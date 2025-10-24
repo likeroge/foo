@@ -17,6 +17,7 @@ type Application struct {
 	Db           *sql.DB
 	Port         string
 	Repositories *repository.Repositories
+	LogFile      *os.File
 }
 
 func NewApplication() *Application {
@@ -37,6 +38,16 @@ func NewApplication() *Application {
 	// app.Server = server
 
 	return app
+}
+
+func (app *Application) SetupLogToFile() {
+	file, err := os.OpenFile("logs/log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.SetOutput(file)
+	log.Println("Log file created")
+	app.LogFile = file
 }
 
 func (app *Application) SetupDatabase() {
