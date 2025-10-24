@@ -2,8 +2,21 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h1 {
   color: purple;
+  margin-bottom: 10px;
+}
+
+.template-time {
+  color: green;
+}
+
+.container {
+  font-weight: bolder;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

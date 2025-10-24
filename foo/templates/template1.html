@@ -8,13 +8,15 @@
   </head>
   <body>
     <h1>{{ .Title }}</h1>
-    <div>
+    <hr />
+    <div class="container">
       <ul>
-        {{ range .Items }}
-        <li>{{ . }}</li>
+        {{ range .Users }}
+        <li>ID: {{ .Id }} Email: {{.Email}}</li>
         {{ end }}
       </ul>
+      <hr />
+      <p class="template-time">Current time: {{ .TimeStamp }}</p>
     </div>
-    <p>Current time: {{ .TimeStamp }}</p>
   </body>
 </html>

@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"ego.dev21/greetings/internal/entities"
 	"ego.dev21/greetings/internal/repository"
 )
 
@@ -15,7 +16,7 @@ type FilesHandler struct {
 
 type PageData struct {
 	Title     string
-	Items     []string
+	Users     []entities.User
 	TimeStamp string
 }
 
@@ -27,9 +28,10 @@ func NewFilesHandler(repositories *repository.Repositories) *FilesHandler {
 
 func (h *FilesHandler) GetHelloTemplate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	users := h.Repositories.UserRepository.GetAllUsers()
 	pageData := &PageData{
-		Title:     "This is Template Title",
-		Items:     []string{"Item 1", "Item 2", "Item 3"},
+		Title:     "This is Users list",
+		Users:     users,
 		TimeStamp: time.Now().Format("2006-01-02 15:04:05"),
 	}
 	t, err := template.ParseFiles("templates/template1.html")
